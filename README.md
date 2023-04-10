@@ -16,7 +16,7 @@ A Collection of Oblique Decision Tree Algorithms for Regression in Python
 ## Introduction 
 We developed the `DecisionTreeBaseline` repository to serve as baselines for comparative studies in Oblique Decision Tree research. Our motivation for developing this repository was the inconvenience of comparing other authors' Oblique Decision Tree algorithms, including `HouseHolder-CART (HHCART)`, `Continuously-Optimized-Oblique-Tree (CO2)`, `BUTIF`[^1], `OC1`, `RandCART`, `RidgeCART`[^2], `Nonlinear-Decision-Tree` and `Linear-Tree`<a href='#Reference'>[1-7]</a>. While some GitHub repositories have incorporated these algorithms, there is still a gap in the availability of a collective package that includes all aforementioned oblique decision tree algorithm together for regression. 
 
-The development of this repository was based on numerous online GitHub resources, which were adapted for regression with some modifications. We extend our gratitude to the authors and developers for their valuable contributions. For further information, please refer to the [Acknowledgements](#acknowledgement) section.
+The development of this repository was based on some online GitHub resources, which were adapted for regression with some modifications. We extend our gratitudes to the authors and developers for their valuable contributions. For further information, please refer to the [Acknowledgements](#acknowledgements) section.
 
 
 [^1]: might be `BUTIA` in the article of "A bottom-up oblique decision tree induction algorithm" (not sure). 
@@ -41,7 +41,7 @@ The example can be implemented via `python test/test_baseline.py`.
 
 
 ## License
-This repository is published under the terms of the `MIT License`. See [LICENSE](https://github.com/) for more details.
+This repository is published under the terms of the `MIT License`. See [LICENSE](https://github.com/maoqiangqiang/DecisionTreeBaseline/blob/main/LICENSE) for more details.
 
 ## Reference 
 <span id='Reference'>
