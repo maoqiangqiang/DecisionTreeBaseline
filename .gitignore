@@ -1,0 +1,17 @@
+
+# ignore mac .DS_Store 
+.DS_Store 
+*/.DS_Store
+
+# ignore .vscode
+.vscode
+
+*.log
+*.out
+*.csv
+*.xlsx
+*.txt
+
+*/__pycache__/
+
+
