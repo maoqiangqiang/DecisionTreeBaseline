@@ -5,7 +5,7 @@ A collection and implementation of several variants of classical decision tree a
 
 <div align="center">
 
-![Language](https://img.shields.io/badge/language-python-blue)
+![Language](https://img.shields.io/badge/language-python-blue?&logo=python)
 ![Dependencies Status](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
 [![License](https://img.shields.io/github/license/maoqiangqiang/decisiontreebaseline)](https://github.com/maoqiangqiang/DecisionTreeBaseline/blob/main/LICENSE)
 
