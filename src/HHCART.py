@@ -72,7 +72,7 @@ class HouseHolderCART(BaseEstimator):
         if self._max_depth != None and cur_depth == self._max_depth:
             # maximum depth reached.
             return True
-        elif y.size < self._min_samples:
+        elif y.size <= self._min_samples:
             # minimum number of samples reached.
             return True
         elif np.unique(y).size == 1:
@@ -207,13 +207,19 @@ class MSE:
     """
 
     def __call__(self, left_label, right_label):
+
         left_len, right_len = len(left_label), len(right_label)
 
-        left_std = np.std(left_label)
-        right_std = np.std(right_label)
+        if left_len != 0:
+            left_std = np.std(left_label)
+        else:
+            left_std = 0.0
+        if right_len != 0:
+            right_std = np.std(right_label)
+        else:
+            right_std = 0.0
 
         total = left_len + right_len
-
         return (left_len / total) * left_std + (right_len / total) * right_std
 
 

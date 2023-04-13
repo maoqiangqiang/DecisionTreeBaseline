@@ -1,6 +1,6 @@
 import numpy as np 
 from sklearn.base import BaseEstimator
-from scipy.stats import mode
+
 from HHCART import MSE
 
 
@@ -77,13 +77,12 @@ class Tree:
     
 
 class Node:
-    def __init__(self, w, b, value=None, conf=0.0, samples=None, features=None):
+    def __init__(self, w, b, value=None, conf=0.0, samples=None):
         self.w = w                  # weights
         self.b = b                  # bias
         self.value = value          # value of the current node if the node is a leaf
         self.conf = conf            # score of the node, typically accuracy or r2
         self.samples = samples      # training examples in this node
-        self.features = features    # features used in this node
         self.left_child = None
         self.right_child = None
         self.is_fitted = False      # flag to check if the node has been fitted
@@ -108,8 +107,8 @@ class Node:
         return y
 
 class LeafNode(Node):
-    def __init__(self,  value=None, conf=0.0, samples=None, features=None):
-        super(LeafNode, self).__init__(w=None, b=None, value=value, conf=conf, samples=samples, features=features)
+    def __init__(self,  value=None, conf=0.0, samples=None):
+        super(LeafNode, self).__init__(w=None, b=None, value=value, conf=conf, samples=samples)
 
     def predict(self, X):
 
@@ -121,13 +120,12 @@ class LeafNode(Node):
 # Implements Murthy et al (1994)'s algorithm to learn an oblique decision tree via random perturbations
 def build_oblique_tree_oc1(X, y,  criterion,
                            max_depth, min_samples_split,
-                           current_depth=0, current_features=None, current_samples=None, debug=False):
+                           current_depth=0,  current_samples=None, debug=False):
 
     n_samples, n_features = X.shape
 
     # Initialize
     if current_depth == 0:
-        current_features = np.arange(n_features)
         current_samples = np.arange(n_samples)
 
     # Score the current node
@@ -139,9 +137,8 @@ def build_oblique_tree_oc1(X, y,  criterion,
     if (current_depth == max_depth or            # max depth reached
             n_samples <= min_samples_split or    # not enough samples to split on
             conf >= 0.95):                       # node is very homogeneous
-
         return LeafNode(value=label, conf=conf,
-                        samples=current_samples, features=current_features), current_depth
+                        samples=current_samples), current_depth
 
     # Otherwise, learn a decision node
     feature_splits = get_best_splits(X, y, criterion=criterion)         # Get the best split for each feature
@@ -161,7 +158,6 @@ def build_oblique_tree_oc1(X, y,  criterion,
         wNew = np.array(w)                                              # Initialize wNew to w
         margin = (np.dot(X, wNew) + b)                                  # Compute the signed margin of all training examples
         u = (X[:, m]*w[m] - margin) / X[:, m]                           # Compute the residual of all training examples
-
         possible_wm = np.convolve(np.sort(u), [0.5, 0.5])[1:-1]         # Generate a list of possible values for new w[m]
         scores = np.empty_like(possible_wm)
         best_wm, best_wm_score = 0, np.inf                              # Find the best value for w[m]
@@ -218,22 +214,21 @@ def build_oblique_tree_oc1(X, y,  criterion,
     left, right = margin <= 0, margin > 0
     if (len(y[left]) == 0 ):
         return LeafNode( value=label, conf=conf,
-                        samples=current_samples, features=current_features), current_depth
+                        samples=current_samples), current_depth
 
     elif(len(y[right]) == 0):
         return LeafNode(value=label, conf=conf,
-                        samples=current_samples, features=current_features), current_depth
+                        samples=current_samples), current_depth
 
     else:
         # Create a decision node
         decision_node = Node(w, b,  value=label, conf=conf,
-                               samples=current_samples, features=current_features)
+                               samples=current_samples)
 
         # Grow the left branch and insert it
         left_node, left_depth = build_oblique_tree_oc1(X[left, :], y[left], criterion,
                                                    max_depth, min_samples_split,
                                                    current_depth=current_depth + 1,
-                                                   current_features=current_features,
                                                    current_samples=current_samples[left])
         decision_node.add_left_child(left_node)
 
@@ -242,7 +237,6 @@ def build_oblique_tree_oc1(X, y,  criterion,
                                                      criterion,
                                                      max_depth, min_samples_split,
                                                      current_depth=current_depth + 1,
-                                                     current_features=current_features,
                                                      current_samples=current_samples[right])
         decision_node.add_right_child(right_node)
 
