@@ -131,7 +131,7 @@ print("NonLinearDTRegr elapsed time: {}\n".format(elapsedTime))
 
 ## LinearTree 
 startTime = time()
-LinearRegr = LinearTreeRegressor(base_estimator=LinearRegression())
+LinearRegr = LinearTreeRegressor(base_estimator=LinearRegression(), max_depth=treeDepth)
 LinearRegr.fit(X, Y)
 y_pred_train = LinearRegr.predict(X)
 y_pred_test = LinearRegr.predict(X_test)
